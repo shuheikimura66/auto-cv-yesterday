@@ -1,0 +1,44 @@
+name: Run Auto CV Script (Today)
+
+on:
+  # 自動実行（cron）を無効化するためにコメントアウトしました
+  # schedule:
+  #   - cron: '*/10 * * * *'
+  
+  # 手動実行のみ可能にする
+  workflow_dispatch:
+
+jobs:
+  run-cv-scraper:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Check file list
+        run: ls -R
+
+      - name: Run script
+        env:
+          # --- 既存の認証情報 ---
+          USER_ID: ${{ secrets.USER_ID }}
+          USER_PASS: ${{ secrets.USER_PASS }}
+          GCP_JSON: ${{ secrets.GCP_JSON }}
+          # --- 今回追加した秘匿情報 ---
+          TARGET_URL: ${{ secrets.TARGET_URL }}
+          SPREADSHEET_ID: ${{ secrets.SPREADSHEET_ID }}
+          PARTNER_NAME: ${{ secrets.PARTNER_NAME }}
+        run: python cv_yesterday_main.py
