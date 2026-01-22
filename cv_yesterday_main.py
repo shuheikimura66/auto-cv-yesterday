@@ -24,7 +24,7 @@ TARGET_URL = os.environ.get("TARGET_URL", "https://example.com/login")
 
 # --- 設定 ---
 SPREADSHEET_ID = os.environ.get("SPREADSHEET_ID", "1H2TiCraNjMNoj3547ZB78nQqrdfbfk2a0rMLSbZBE48")
-SHEET_NAME = "今月_raw"
+SHEET_NAME = "先日_raw"
 PARTNER_NAME = "株式会社フルアウト"
 
 def get_google_service(service_name, version, scopes):
@@ -138,17 +138,19 @@ def main():
             print(f"絞り込み検索ボタンが見つかりません: {e}")
             pass
 
-        # --- 3. 「今月」ボタンをクリック ---
-        print("「今月」ボタンを選択します...")
+        # --- 3. 「昨日」ボタンをクリック ---
+        print("「昨日」ボタンを選択します...")
         try:
-            current_month_btn = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".current_month")))
-            driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", current_month_btn)
+            # 修正: class="yesterday" を指定してクリック
+            yesterday_btn = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".yesterday")))
+            
+            driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", yesterday_btn)
             time.sleep(1)
-            current_month_btn.click()
-            print("「今月」ボタンをクリックしました")
+            yesterday_btn.click()
+            print("「昨日」ボタンをクリックしました")
             time.sleep(3) # 日付入力欄への反映待ち
         except Exception as e:
-            print(f"「今月」ボタンの操作エラー: {e}")
+            print(f"「昨日」ボタンの操作エラー: {e}")
 
         # --- 4. パートナー（株式会社フルアウト）を選択 ---
         print(f"パートナー({PARTNER_NAME})を入力します...")
