@@ -1,4 +1,4 @@
-name: Run Auto CV Script (Today)
+name: Run Auto CV Script (Yesterday)
 
 on:
   # 自動実行（cron）を無効化するためにコメントアウトしました
@@ -7,6 +7,11 @@ on:
   
   # 手動実行のみ可能にする
   workflow_dispatch:
+
+# ▼ 追加: 同じワークフローが重複して実行されないようにする設定
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   run-cv-scraper:
