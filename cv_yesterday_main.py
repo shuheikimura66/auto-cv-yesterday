@@ -83,9 +83,9 @@ def update_google_sheet(csv_path):
         print(f"書き込みエラー: {e}")
 
 def main():
-    print("=== Action Log取得処理開始(今月分) ===")
+    print("=== Action Log取得処理開始((昨日分) ===")
     
-    download_dir = os.path.join(os.getcwd(), "downloads_action_month")
+    download_dir = os.path.join(os.getcwd(), "downloads_action_yesterday")
     if not os.path.exists(download_dir):
         os.makedirs(download_dir)
 
